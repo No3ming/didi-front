@@ -172,7 +172,7 @@ router.afterEach(to => {
     case '/':
     case '/login':
     case '/canOrder':
-      document.title = '我要接单'
+      document.title = '我有需求'
       break
     case '/progress':
       document.title = '进行中的订单'
