@@ -1,8 +1,8 @@
 <template>
   <div class="nav-bar one-px-top">
-    <router-link class="nav-bar-item" to="/canOrder">
+    <router-link class="nav-bar-item" to="/waitOrder">
       <i class="icon-qiangdan"></i>
-      <p class="nav-bar-label">可抢的订单</p>
+      <p class="nav-bar-label">待处理的订单</p>
     </router-link>
     <router-link class="nav-bar-item" to="/progress">
        <span class="badge-box">

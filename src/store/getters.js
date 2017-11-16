@@ -21,7 +21,7 @@ export const workingExperienceImgs = state => state.workingExperienceImgs
 
 export const workingExperience = state => state.workingExperience
 
-export const realname = state => state.realname
+export const contacts = state => state.contacts
 
 export const phone = state => state.phone
 
@@ -34,3 +34,7 @@ export const progressTotal = state => state.progressTotal
 export const completedTotal = state => state.completedTotal
 
 export const isCenter = state => state.isCenter || window.sessionStorage.getItem('isCenter')
+
+export const company = state => state.company
+
+export const isLogin = state => state.isLogin

@@ -1,11 +1,11 @@
 <template>
   <container class="contain-nav canOrder">
     <sticky style="height:44px;">
-        <grid class="order-header">
-          <grid-item v-for="(item, index) in gridHeader" :key="index" class="header-item">
-            <span class="grid-center info" v-html="item"></span>
-          </grid-item>
-        </grid>
+      <grid class="order-header">
+        <grid-item v-for="(item, index) in gridHeader" :key="index" class="header-item">
+          <span class="grid-center info" v-html="item"></span>
+        </grid-item>
+      </grid>
     </sticky>
     <div>
       <x-table full-bordered style="background-color:#fff; table-layout:fixed" >

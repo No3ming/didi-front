@@ -36,8 +36,8 @@ export const upWorkingExperience = ({ commit }, workingExperience) => {
   commit('UPDATE_WORKING_EXPERIENCE', workingExperience)
 }
 
-export const upRealname = ({ commit }, realname) => {
-  commit('UPDATE_REAL_NAME', realname)
+export const upContacts = ({ commit }, contacts) => {
+  commit('UPDATE_CONTACTS', contacts)
 }
 
 export const upPhone = ({ commit }, phone) => {
@@ -63,4 +63,12 @@ export const upCompletedTotal = ({ commit }, completedTotal) => {
 export const upIsCenter = ({ commit }, isCenter) => {
   commit('UPDATE_IS_CENTER', isCenter)
   window.sessionStorage.setItem('isCenter', isCenter)
+}
+
+export const upCompany = ({ commit }, company) => {
+  commit('UPDATE_COMPANY', company)
+}
+
+export const upIsLogin = ({ commit }, isLogin) => {
+  commit('UPDATE_IS_LOGIN', isLogin)
 }

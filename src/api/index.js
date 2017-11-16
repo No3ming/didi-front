@@ -6,23 +6,27 @@ import service from './service'
 const api = {
   // 注册
   registered (payload) {
-    return service.post('/accountant/register', payload)
+    return service.post('/user/register', payload)
   },
   // 登陆
   login (payload) {
-    return service.post('/accountant/login', payload)
+    return service.post('/user/login', payload)
   },
-  // 可抢订单列表 <需token>
+  // 待处理列表 <需token>
   getRobOrder (payload) {
-    return service.post('/accountant/robOrder', payload)
+    return service.post('/user/waitingOrder', payload)
+  },
+  // 服务类型
+  getServeType (payload) {
+    return service.post('/user/serve_type', payload)
   },
   // 进行中订单列表 <需token>
   getProgress (payload) {
-    return service.post('/accountant/progress', payload)
+    return service.post('/user/progressOrder', payload)
   },
   // 完成的订单
   getComplete (payload) {
-    return service.post('/accountant/completeList', payload)
+    return service.post('/user/completeOrder', payload)
   },
   // 抢单<到这个页面要请求一次,返回是否需要支付或要支付多少保证金>
   getRobOrdering (payload) {
@@ -39,12 +43,15 @@ const api = {
   postProgress (payload) {
     return service.post('/accountant/postProgress', payload)
   },
+  onOrder (payload) {
+    return service.post('/user/order', payload)
+  },
   // 不需保证金抢订单
   robing (payload) {
     return service.post('/accountant/robing', payload)
   },
   getCenter (payload) {
-    return service.post('/accountant/center', payload)
+    return service.post('/center/index', payload)
   },
   getInfo (payload) {
     return service.post('/accountant/info', payload)

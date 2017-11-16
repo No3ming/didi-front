@@ -3,8 +3,9 @@ import Router from 'vue-router'
 import store from '../store'
 
 import NavBar from '../components/NavBar.vue'
+import NewOrder from '../components/NewOrder.vue'
 
-import CanOrder from '../views/CanOrder.vue'
+import WaitOrder from '../views/WaitOrder.vue'
 import Progress from '../views/Progress.vue'
 import Completed from '../views/Completed.vue'
 import OrderDetail from '../views/OrderDetail.vue'
@@ -26,11 +27,12 @@ Vue.use(Router)
 
 const routes = [
   {
-    path: '/canOrder',
-    name: ' 我要接单',
+    path: '/waitOrder',
+    name: 'waitOrder',
     components: {
-      default: CanOrder,
-      nav: NavBar
+      default: WaitOrder,
+      nav: NavBar,
+      new: NewOrder
     }
   },
   {
@@ -68,22 +70,22 @@ const routes = [
     component: Login
   },
   {
-    path: '/registered/step1',
+    path: '/step1',
     name: 'step1',
     component: Step1
   },
   {
-    path: '/registered/step2',
+    path: '/step2',
     name: 'step2',
     component: Step2
   },
   {
-    path: '/registered/step3',
+    path: '/step3',
     name: 'step3',
     component: Step3
   },
   {
-    path: '/registered/step4',
+    path: '/step4',
     name: 'step4',
     component: Step4
   },
@@ -126,10 +128,10 @@ const router = new Router({
 router.beforeEach((to, from, next) => {
   let flag
   switch (to.path) {
-    case '/registered/step1':
-    case '/registered/step2':
-    case '/registered/step3':
-    case '/registered/step4':
+    case '/step1':
+    case '/step2':
+    case '/step3':
+    case '/step4':
     case '/registered/certification':
     case '/forget':
     case '/login':
@@ -146,21 +148,23 @@ router.beforeEach((to, from, next) => {
       flag = false
       break
   }
-  if (!store.getters.token && !flag) {
-    next({ path: '/login' })
-  } else if (!store.getters.token && flag) {
-    if (to.path === '/') {
-      next({path: '/login'})
-    } else {
-      next()
-    }
-  } else {
-    if (to.path === '/') {
-      next({path: '/canOrder'})
-    } else {
-      next()
-    }
-  }
+  next()
+  console.log(flag)
+  // if (!store.getters.token && !flag) {
+  //   next({ path: '/login' })
+  // } else if (!store.getters.token && flag) {
+  //   if (to.path === '/') {
+  //     next({path: '/login'})
+  //   } else {
+  //     next()
+  //   }
+  // } else {
+  //   if (to.path === '/') {
+  //     next({path: '/canOrder'})
+  //   } else {
+  //     next()
+  //   }
+  // }
 })
 
 router.afterEach(to => {

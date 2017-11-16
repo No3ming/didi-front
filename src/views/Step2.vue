@@ -1,7 +1,7 @@
 <template>
   <container class="step2">
-    <group :title="'第二步: 请选择你能提供的城市'">
-      <x-address :title="'第e二步: 请选择你能提供的城市'" @on-hide="logHide" v-model="value" :list="addressData" placeholder="请选择地址" >
+    <group :title="'第二步: 请选择你需要服务的城市'">
+      <x-address :title="'第二步: 请选择你能提供的城市'" @on-hide="logHide" v-model="value" :list="addressData" placeholder="请选择地址" >
         <template slot="title" slot-scope="props"><!-- use scope="props" when vue < 2.5.0 -->
           <span :class="props.labelClass" :style="props.labelStyle" style="height:24px;">
           <span style="vertical-align:middle;">地址</span>
@@ -36,7 +36,7 @@
     methods: {
       next () {
         this.upServeCityId(this.value)
-        this.$router.push('/registered/step3')
+        this.$router.push('/step3')
       },
       logHide (str) {
         console.log(this.value)
@@ -47,7 +47,8 @@
     },
     computed: {
       ...mapGetters([
-        'serveCityId'
+        'serveCityId',
+        'isLogin'
       ])
     },
     components: {

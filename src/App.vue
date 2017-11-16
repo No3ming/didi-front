@@ -6,6 +6,7 @@
         <router-view class="transition"></router-view>
       </keep-alive>
     </transition>
+    <router-view name="new"></router-view>
   </div>
 </template>
 

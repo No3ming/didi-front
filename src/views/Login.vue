@@ -14,10 +14,10 @@
     </group>
     <flexbox class="link-to">
       <flexbox-item class="link-box">
-        <router-link to="/registered/step1" class="link">注册和通过平台认证</router-link>
+        <router-link to="/step1" class="link">注册和通过平台认证</router-link>
       </flexbox-item>
       <flexbox-item class="link-box">
-        <router-link to="/forget" class="link">忘记手机号码</router-link>
+        <a class="link" @click="linkService">忘记手机号码</a>
       </flexbox-item>
     </flexbox>
   </container>
@@ -74,6 +74,12 @@
             content: '输入不正确'
           })
         }
+      },
+      linkService () {
+        this.$vux.alert.show({
+          title: '联系客服',
+          content: '电话： 12312313<br/>'
+        })
       },
       ...mapActions([
         'upToken'

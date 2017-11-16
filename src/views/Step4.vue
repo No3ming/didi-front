@@ -1,34 +1,22 @@
 <template>
   <container class="step4">
     <group title="预览您即将提交的信息(如需修改信息请联系客服，电话189388318838)" label-width="7em" label-margin-right="0.5em" label-align="center">
-      <cell title="我的项目" value-align="right" link="/registered/step1">
+      <cell title="需求项目" value-align="right" link="/step1">
         <span v-show="services.length === 0">编辑</span>
         <div v-show="services.length > 0">
           <span v-for="(item, i) in services" v-html="item + ' '"></span>
         </div>
       </cell>
-      <cell title="我的服务的城市" value-align="right" link="/registered/step2">
+      <cell title="需求城市" value-align="right" link="/step2">
         <span v-show="serveCitys.length === 0">编辑</span>
         <div v-show="serveCitys.length > 0">
           <span v-for="(item, i) in serveCitys" v-html="item + ' '"></span>
         </div>
       </cell>
-      <cell title="我的姓名" :value="realname" value-align="right" link="/registered/step3"></cell>
-      <cell title="我的手机" :value="phone" value-align="right" link="/registered/step3"></cell>
-      <cell title="我的地址" :value="address" value-align="right" link="/registered/step3"></cell>
-      <cell title="我的证件照片" value-align="right" link="/registered/step3">
-        <span v-show="certificateImgs.length === 0">编辑</span>
-        <div v-show="certificateImgs.length > 0">
-          <img v-for="(item, i) in certificateImgs" :src="item.url" :key="i" class="img-item"/>
-        </div>
-      </cell>
-      <cell title="我的从业经历" value-align="right" link="/registered/step3">
-        <span v-show="workingExperienceImgs.length === 0">编辑</span>
-        <div v-show="workingExperienceImgs.length > 0">
-          <img v-for="(item, i) in workingExperienceImgs" :src="item.url" :key="i" class="img-item"/>
-        </div>
-      </cell>
-      <cell title="登陆密码" value="******" value-align="right" link="/registered/step3"></cell>
+      <cell title="联系人" :value="contacts" value-align="right" link="/step3"></cell>
+      <cell title="地址" :value="address" value-align="right" link="/step3"></cell>
+      <cell title="联系手机" :value="phone" value-align="right" link="/step3"></cell>
+      <cell v-if="isLogin" title="登陆密码" value="******" value-align="right" link="/step3"></cell>
     </group>
     <divider class="tips">以上信息用于证明您的服务能力和资格，<br/>请确保提供的信息真实有效，我们<br/>不会泄漏您的信息</divider>
     <group>
@@ -74,32 +62,39 @@
         })
         const serviceList = this.serviceList.join(',')
         const serveCityId = this.serveCityId.join(',')
-        const certificateImgs = this.certificateImgs.map((item) => {
-          return item.id
-        }).join(',')
-        const workingExperienceImgs = this.workingExperienceImgs.map((item) => {
-          return item.id
-        }).join(',')
-        const res = await api.registered({
-          serve_type: serviceList,
-          serve_city_id: serveCityId,
-          address: this.address,
-          certificate_imgs: certificateImgs,
-          working_experience_imgs: workingExperienceImgs,
-          working_experience: this.workingExperience,
-          realname: this.realname,
-          phone: this.phone,
-          password: this.password
-        })
+        let res
+        if (this.isLogin) {
+          res = await api.onOrder({
+            serve_type: serviceList,
+            serve_city_id: serveCityId,
+            address: this.address,
+            contacts: this.contacts,
+            phone: this.phone
+          })
+        } else {
+          res = await api.registered({
+            serve_type: serviceList,
+            serve_city_id: serveCityId,
+            address: this.address,
+            contacts: this.contacts,
+            phone: this.phone,
+            password: this.password
+          })
+        }
+
         this.$vux.loading.hide()
         if (res.code === 20000) {
           // this.$router.push('/registered/step4')
           let self = this
           this.$vux.alert.show({
             title: '提交成功',
-            content: '我们将在三个工作日内通过微信反馈认证结果，您也可以通过滴滴财务的"个人中心"菜单查询认证进度',
+            content: '可以在订单中查看',
             onHide () {
-              self.$router.push('/login')
+              if (self.isLogin) {
+                self.$router.push('/waitOrder')
+              } else {
+                self.$router.push('/login')
+              }
             }
           })
         } else {
@@ -108,6 +103,7 @@
             content: res.message
           })
         }
+        this.$router.push('/waitOrder')
       },
       logHide (str) {
         console.log(this.value)
@@ -117,15 +113,6 @@
         if (status) {
           this.$refs.textarea.focus()
         }
-      },
-      onEvent (tips) {
-        console.log(tips)
-      },
-      miniUploaded () {
-        console.log(12)
-      },
-      miniChanged () {
-        console.log(12)
       }
     },
     computed: {
@@ -133,12 +120,13 @@
         'certificateImgs',
         'workingExperienceImgs',
         'workingExperience',
-        'realname',
+        'contacts',
         'password',
         'phone',
         'address',
         'serveCityId',
-        'serviceList'
+        'serviceList',
+        'isLogin'
       ])
     },
     components: {

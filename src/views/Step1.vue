@@ -1,6 +1,6 @@
 <template>
   <container class="order-detail">
-    <checklist :title="'第一步: 请选择你能提供的服务（可多选）'" :label-position="labelPosition" :required="true" :options="commonList" v-model="checks" @on-change="change01"></checklist>
+    <checklist :title="'第一步: 请选择你能需要的服务（可多选）'" :label-position="labelPosition" :required="true" :options="commonList" v-model="checks" @on-change="change01"></checklist>
     <group>
       <cell-box>
         <x-button type="primary" :disabled="checks.length === 0" @click.native="next">下一步</x-button>
@@ -13,6 +13,7 @@
   import Container from '../components/Container.vue'
   import { CellBox, Divider, Group, GroupTitle, XButton, Checklist, XAddress, ChinaAddressV4Data } from 'vux'
   import { mapGetters, mapActions } from 'vuex'
+  import api from '../api'
 
   export default {
     name: 'detail',
@@ -25,13 +26,22 @@
         addressData: ChinaAddressV4Data
       }
     },
-    mounted () {
+    async mounted () {
+      const res = await api.getServeType()
+      if (res.code === 20000) {
+        // this.commonList = res.data
+      } else {
+        this.$vux.alert.show({
+          title: '提示',
+          content: res.message
+        })
+      }
       this.checks = this.serviceList
     },
     methods: {
       next () {
         this.upServiceList(this.checks)
-        this.$router.push('/registered/step2')
+        this.$router.push('/step2')
       },
       change01 (str) {
         console.log(str)
@@ -42,7 +52,8 @@
     },
     computed: {
       ...mapGetters([
-        'serviceList'
+        'serviceList',
+        'isLogin'
       ])
     },
     components: {

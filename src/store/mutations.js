@@ -17,7 +17,7 @@ export const UPDATE_WORKING_EXPERIENCE_IMG = (state, workingExperienceImgs) => {
 
 export const UPDATE_WORKING_EXPERIENCE = (state, workingExperience) => { state.workingExperience = workingExperience }
 
-export const UPDATE_REAL_NAME = (state, realname) => { state.realname = realname }
+export const UPDATE_CONTACTS = (state, contacts) => { state.contacts = contacts }
 
 export const UPDATE_PHONE = (state, phone) => { state.phone = phone }
 
@@ -30,3 +30,7 @@ export const UPDATE_PROGRESS_TOTAL = (state, progressTotal) => { state.progressT
 export const UPDATE_COMPLETE_TOTAL = (state, completedTotal) => { state.completedTotal = completedTotal }
 
 export const UPDATE_IS_CENTER = (state, isCenter) => { state.isCenter = isCenter }
+
+export const UPDATE_COMPANY = (state, company) => { state.company = company }
+
+export const UPDATE_IS_LOGIN = (state, isLogin) => { state.isLogin = isLogin }
