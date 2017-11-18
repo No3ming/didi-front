@@ -20,7 +20,7 @@
     data () {
       return {
         labelPosition: '',
-        commonList: [{ key: 1, value: '工商注册／变更' }, {key: 2, value: '记账报税'}, {key: 3, value: '商标注册／知识产权'}, {key: 4, value: '我不知道'}],
+        commonList: [],
         checks: [],
         value_0_1: [],
         addressData: ChinaAddressV4Data
@@ -29,7 +29,10 @@
     async mounted () {
       const res = await api.getServeType()
       if (res.code === 20000) {
-        // this.commonList = res.data
+        this.commonList = Object.keys(res.data).map((item) => {
+          return {key: item, value: res.data[item]}
+        })
+        this.upNewServiceList(this.commonList)
       } else {
         this.$vux.alert.show({
           title: '提示',
@@ -41,13 +44,14 @@
     methods: {
       next () {
         this.upServiceList(this.checks)
-        this.$router.push('/step2')
+        this.$router.push('/user/step2')
       },
       change01 (str) {
         console.log(str)
       },
       ...mapActions([
-        'upServiceList'
+        'upServiceList',
+        'upNewServiceList'
       ])
     },
     computed: {

@@ -2,9 +2,7 @@
   <div class="app" id="app">
     <router-view name="nav"></router-view>
     <transition :name="transitionName">
-      <keep-alive :include="['canOrder', 'progress', 'completed']">
-        <router-view class="transition"></router-view>
-      </keep-alive>
+      <router-view class="transition"></router-view>
     </transition>
     <router-view name="new"></router-view>
   </div>

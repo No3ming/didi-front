@@ -14,7 +14,7 @@
     </group>
     <flexbox class="link-to">
       <flexbox-item class="link-box">
-        <router-link to="/step1" class="link">注册和通过平台认证</router-link>
+        <a @click="onRegister" class="link">注册和通过平台认证</a>
       </flexbox-item>
       <flexbox-item class="link-box">
         <a class="link" @click="linkService">忘记手机号码</a>
@@ -29,7 +29,7 @@
   import defaultImg from '@/assets/header.jpg'
   import api from '../api'
   import { mapActions, mapGetters } from 'vuex'
-  // import axios from 'axios'
+  import axios from 'axios'
 
   export default {
     name: 'login',
@@ -53,11 +53,13 @@
             this.$vux.alert.show({
               title: '登陆成功',
               onHide () {
+                axios.defaults.params = {token: res.data.token}
+                self.upIsLogin(true)
+                self.upIsCenter(window.sessionStorage.getItem('user-isCenter') === 'true')
                 if (self.isCenter === 'true' || self.isCenter === true) {
-                  console.log(1111)
-                  window.location.replace('/personal')
+                  self.$router.replace('/user/personal')
                 } else {
-                  window.location.replace('/canOrder')
+                  self.$router.replace('/user/waitOrder')
                 }
               }
             })
@@ -81,7 +83,14 @@
           content: '电话： 12312313<br/>'
         })
       },
+      onRegister () {
+        this.upToken('', 0)
+        this.$router.push('/user/step1')
+      },
       ...mapActions([
+        'upToken',
+        'upIsLogin',
+        'upIsCenter',
         'upToken'
       ])
     },

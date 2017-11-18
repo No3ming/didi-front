@@ -4,6 +4,7 @@
 export default {
   transitionName: 'fade',
   token: '',
+  newServiceList: [],
   serviceList: [],
   serveCityId: [],
   address: '',

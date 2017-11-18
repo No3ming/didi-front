@@ -33,7 +33,7 @@
   import { mapActions } from 'vuex'
 
   export default {
-    name: 'canOrder',
+    name: 'Completed',
     data: () => {
       return {
         gridHeader: ['客户姓名', '服务项目', '服务佣金', '佣金状态'],
@@ -43,7 +43,7 @@
     methods: {
       onDetail (order) {
         this.upNowOrder(order)
-        this.$router.push('/order/detail?status=3')
+        this.$router.push('/user/order/detail?status=3')
       },
       ...mapActions([
         'upNowOrder',
@@ -66,7 +66,7 @@
           content: res.message,
           onHide () {
             if (res.code === 402) {
-              self.$router.replace('/login')
+              self.$router.replace('/user/login')
             }
           }
         })

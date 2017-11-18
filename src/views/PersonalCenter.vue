@@ -2,11 +2,13 @@
   <container class="center">
     <group :title="'我的赚钱'">
       <cell title="账户金额(可提现)" :value="'¥' + amount" value-align="right" @click.native="onWithdraw"></cell>
-      <cell title="已结算金额" value="查看" value-align="right" link="/amount/1"></cell>
-      <cell title="已提现金额" value="查看" value-align="right" link="/amount/2"></cell>
+      <cell title="已结算金额" value-align="right"  :value="'¥' + withdraw_amount"></cell>
+      <cell title="已提现金额"  value-align="right"  :value="'¥' + frozen_amount"></cell>
     </group>
     <group :title="'我的信息'">
-      <cell title="我的信息(服务项目,城市,个人信息)" value="查看" value-align="right" link="/personal/my-info"></cell>
+      <cell title="地址" :value="address" value-align="right" ></cell>
+      <cell title="手机" :value="phone" value-align="right" ></cell>
+      <cell title="地址" :value="address" value-align="right" ></cell>
     </group>
     <div v-transfer-dom>
       <confirm v-model="isWithdraw"
@@ -38,7 +40,10 @@
         withdraw: null,
         amount: null,
         frozen_amount: null,
-        withdraw_amount: null
+        withdraw_amount: null,
+        address: '',
+        phone: '',
+        min_withdraw_amount: ''
       }
     },
     async mounted () {
@@ -47,6 +52,9 @@
         this.amount = res.data.amount
         this.frozen_amount = res.data.frozen_amount
         this.withdraw_amount = res.data.withdraw_amount
+        this.address = res.data.address
+        this.phone = res.data.phone
+        this.min_withdraw_amount = res.data.min_withdraw_amount
       } else {
         let self = this
         this.$vux.alert.show({
@@ -54,7 +62,7 @@
           content: res.message,
           onHide () {
             if (res.code === 402) {
-              self.$router.replace('/login')
+              self.$router.replace('/user/login')
             }
           }
         })
@@ -70,6 +78,13 @@
         this.$refs.confirm.setInputValue('')
       },
       async onConfirm (value) {
+        if (value < this.min_withdraw_amount) {
+          this.$vux.alert.show({
+            title: '提示',
+            content: '最小提款金额 ¥' + this.min_withdraw_amount
+          })
+          return false
+        }
         this.$refs.confirm.setInputValue('')
         const res = await api.getWithdraw({amount: value})
         if (res.code === 20000) {
@@ -78,7 +93,7 @@
             title: '提示',
             content: '已经提交处理！',
             onHide () {
-              self.$router.replace('/personal')
+              self.$router.replace('/user/personal')
             }
           })
         } else {

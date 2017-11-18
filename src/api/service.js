@@ -7,8 +7,9 @@
 import axios from 'axios'
 import store from '../store'
 import getCookie from '../utils/getCookie'
+import setCookie from '../utils/setCookie'
 
-let token = store.getters.token || getCookie('token') || ''
+let token = store.getters.token || getCookie('user-token') || ''
 // 设置请求公共参数
 axios.defaults.timeout = 10000
 axios.defaults.baseURL = '/api'
@@ -26,6 +27,10 @@ function checkStatus ([status, statusText, data]) {
     let error = new Error(statusText)
     error.status = status
     error.error_message = data
+    if (status === 402 || status === 405) {
+      store.dispatch('upIsLogin', false)
+      setCookie('token', '', -1)
+    }
     return Promise.reject(error)
   }
 }

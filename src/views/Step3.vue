@@ -5,12 +5,12 @@
                placeholder="编辑" required ref="contacts"></x-input>
       <x-input required is-type="china-mobile" :max="13" title="联系手机<br/><span class='label-2'>(必填)</span>" @on-change="onPhone" text-align="right" ref="phone" v-model="phone1"
                placeholder="编辑"></x-input>
-      <x-input required title="地址<br/><span class='label-2'>(必填)</span>" @on-change="onAddress" text-align="right" ref="phone" v-model="address1"
+      <x-input required title="地址<br/><span class='label-2'>(必填)</span>" @on-change="onAddress" text-align="right" ref="address" v-model="address1"
                placeholder="编辑"></x-input>
-      <x-input ref="company" title="公司名<br/><span class='label-2'>(可填)</span>" @on-change="onCompany" text-align="right" v-model="company1"
+      <x-input required ref="company" title="公司名<br/><span class='label-2'>(必填)</span>" @on-change="onCompany" text-align="right" v-model="company1"
                placeholder="编辑"></x-input>
-      <x-input v-if="isLogin" required ref="password1" title="请设置一个登陆密码" type="password" @on-change="onPassword" placeholder="编辑" text-align="right" v-model="password1"></x-input>
-      <x-input v-if="isLogin" required ref="password2" title="请重复输入密码" type="password" placeholder="编辑" :is-type="onComirePassword" text-align="right" v-model="password2"></x-input>
+      <x-input v-if="!token" required ref="password1" title="请设置一个登陆密码" type="password" @on-change="onPassword" placeholder="编辑" text-align="right" v-model="password1"></x-input>
+      <x-input v-if="!token" required ref="password2" title="请重复输入密码" type="password" placeholder="编辑" :is-type="onComirePassword" text-align="right" v-model="password2"></x-input>
     </group>
     <divider class="tips">以上信息用于证明您的服务能力和资格，<br/>请确保提供的信息真实有效，我们<br/>不会泄漏您的信息</divider>
     <group>
@@ -41,7 +41,7 @@
   import { mapActions, mapGetters } from 'vuex'
 
   export default {
-    name: 'detail',
+    name: 'step3',
     data () {
       return {
         contacts1: '',
@@ -80,8 +80,22 @@
         }
       },
       onNext () {
-        if (this.$refs.contacts.valid && this.$refs.phone.valid && this.$refs.password1.valid && this.$refs.password2.valid) {
-          this.$router.push('/step4')
+        console.log(this.$refs.phone.valid)
+        if (
+            this.$refs.contacts.valid &&
+            this.$refs.phone.valid &&
+            this.$refs.address.valid &&
+            this.$refs.company.valid &&
+            (
+              this.token ||
+              (
+                this.$refs.password1.valid &&
+                this.$refs.password2.valid &&
+                this.$refs.password1.valid === this.$refs.password2.valid
+              )
+            )
+          ) {
+          this.$router.push('/user/step4')
         } else {
           this.$vux.alert.show({
             title: '提示',
@@ -125,7 +139,7 @@
     },
     computed: {
       isNext () {
-        return !(this.contacts1 && this.phone1 && this.address1 && this.password1 && this.password2 && this.password1 === this.password2)
+        return !(this.contacts1 && this.phone1 && this.company1 && this.address1 && ((this.password1 && this.password2 && this.password1 === this.password2) || this.token))
       },
       ...mapGetters([
         'certificateImgs',
@@ -135,7 +149,7 @@
         'phone',
         'address',
         'company',
-        'isLogin'
+        'token'
       ])
     },
     components: {

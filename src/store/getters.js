@@ -5,7 +5,7 @@ import getCookie from '../utils/getCookie'
 
 export const direction = state => state.direction
 
-export const token = state => getCookie('token') || ''
+export const token = state => state.token || getCookie('user-token') || ''
 
 export const transitionName = state => state.transitionName
 
@@ -33,8 +33,10 @@ export const progressTotal = state => state.progressTotal
 
 export const completedTotal = state => state.completedTotal
 
-export const isCenter = state => state.isCenter || window.sessionStorage.getItem('isCenter')
+export const isCenter = state => state.isCenter || window.sessionStorage.getItem('user-isCenter')
 
 export const company = state => state.company
 
 export const isLogin = state => state.isLogin
+
+export const newServiceList = state => state.newServiceList

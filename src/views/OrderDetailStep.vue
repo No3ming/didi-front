@@ -1,11 +1,6 @@
 <template>
   <container class="order-detail">
-    <checklist :title="'订单编号： 12323123'" :label-position="labelPosition" :required="true" :options="commonList" v-model="checklist" @on-change="change01"></checklist>
-    <group>
-      <cell-box>
-        <x-button type="primary" @click.native="onSubmit">提交进度</x-button>
-      </cell-box>
-    </group>
+    <checklist :title="'订单编号： 12323123'" disabled :label-position="labelPosition" :required="true" :options="commonList" v-model="checklist" @on-change="change01"></checklist>
   </container>
 </template>
 
@@ -15,7 +10,7 @@
   import api from '../api'
 
   export default {
-    name: 'detail',
+    name: 'orderDetailStep',
     data () {
       return {
         labelPosition: '',
@@ -45,7 +40,7 @@
           content: res.message,
           onHide () {
             if (res.code === 402) {
-              self.$router.replace('/login')
+              self.$router.replace('/user/login')
             }
           }
         })
@@ -53,7 +48,7 @@
     },
     methods: {
       next () {
-        this.$router.push('/registered/step2')
+        this.$router.push('/user/registered/step2')
       },
       change01 (str) {
         console.log(str)
@@ -62,7 +57,7 @@
         if (this.checklist.length > 0) {
           const res = await api.postProgress({order_id: this.id, type: this.checklist.join(',')})
           if (res.code === 20000) {
-            this.$router.replace('/progress')
+            this.$router.replace('/user/progress')
           } else {
             let self = this
             this.$vux.alert.show({
@@ -70,7 +65,7 @@
               content: res.message,
               onHide () {
                 if (res.code === 402) {
-                  self.$router.replace('/login')
+                  self.$router.replace('/user/login')
                 }
               }
             })

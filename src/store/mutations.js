@@ -34,3 +34,5 @@ export const UPDATE_IS_CENTER = (state, isCenter) => { state.isCenter = isCenter
 export const UPDATE_COMPANY = (state, company) => { state.company = company }
 
 export const UPDATE_IS_LOGIN = (state, isLogin) => { state.isLogin = isLogin }
+
+export const UPDATE_NEW_SERVICE_LIST = (state, newServiceList) => { state.newServiceList = newServiceList }

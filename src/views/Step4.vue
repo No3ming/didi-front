@@ -1,22 +1,22 @@
 <template>
   <container class="step4">
-    <group title="预览您即将提交的信息(如需修改信息请联系客服，电话189388318838)" label-width="7em" label-margin-right="0.5em" label-align="center">
-      <cell title="需求项目" value-align="right" link="/step1">
+    <group title="预览您即将提交的信息" label-width="7em" label-margin-right="0.5em" label-align="center">
+      <cell title="需求项目" value-align="right" link="/user/step1">
         <span v-show="services.length === 0">编辑</span>
         <div v-show="services.length > 0">
           <span v-for="(item, i) in services" v-html="item + ' '"></span>
         </div>
       </cell>
-      <cell title="需求城市" value-align="right" link="/step2">
+      <cell title="需求城市" value-align="right" link="/user/step2">
         <span v-show="serveCitys.length === 0">编辑</span>
         <div v-show="serveCitys.length > 0">
           <span v-for="(item, i) in serveCitys" v-html="item + ' '"></span>
         </div>
       </cell>
-      <cell title="联系人" :value="contacts" value-align="right" link="/step3"></cell>
-      <cell title="地址" :value="address" value-align="right" link="/step3"></cell>
-      <cell title="联系手机" :value="phone" value-align="right" link="/step3"></cell>
-      <cell v-if="isLogin" title="登陆密码" value="******" value-align="right" link="/step3"></cell>
+      <cell title="联系人" :value="contacts" value-align="right" link="/user/step3"></cell>
+      <cell title="地址" :value="address" value-align="right" link="/user/step3"></cell>
+      <cell title="联系手机" :value="phone" value-align="right" link="/user/step3"></cell>
+      <cell v-if="!token" title="登陆密码" value="******" value-align="right" link="/user/step3"></cell>
     </group>
     <divider class="tips">以上信息用于证明您的服务能力和资格，<br/>请确保提供的信息真实有效，我们<br/>不会泄漏您的信息</divider>
     <group>
@@ -38,22 +38,11 @@
     name: 'detail',
     data () {
       return {
-        services: [],
-        serveCitys: [],
-        commonList: [{ key: 1, value: '工商注册/变更' }, {key: 2, value: '记账报税'}, {key: 3, value: '商标注册/知识产权'}, {key: 4, value: '我不知道'}]
+        commonList: []
       }
     },
     mounted () {
-      this.services = this.serviceList.map((item, i) => {
-        return this.commonList[item].value
-      })
-      ChinaAddressV4Data.forEach((item, i) => {
-        this.serveCityId.forEach((value, i) => {
-          if (item.value === value) {
-            this.serveCitys.push(item.name)
-          }
-        })
-      })
+      // this.commonList = this.newServiceList
     },
     methods: {
       async onSure () {
@@ -63,10 +52,11 @@
         const serviceList = this.serviceList.join(',')
         const serveCityId = this.serveCityId.join(',')
         let res
-        if (this.isLogin) {
+        if (this.token) {
           res = await api.onOrder({
             serve_type: serviceList,
             serve_city_id: serveCityId,
+            company: this.company,
             address: this.address,
             contacts: this.contacts,
             phone: this.phone
@@ -76,6 +66,7 @@
             serve_type: serviceList,
             serve_city_id: serveCityId,
             address: this.address,
+            company: this.company,
             contacts: this.contacts,
             phone: this.phone,
             password: this.password
@@ -84,16 +75,16 @@
 
         this.$vux.loading.hide()
         if (res.code === 20000) {
-          // this.$router.push('/registered/step4')
+          // this.$router.push('/user/registered/step4')
           let self = this
           this.$vux.alert.show({
             title: '提交成功',
-            content: '可以在订单中查看',
+            content: res.message,
             onHide () {
-              if (self.isLogin) {
-                self.$router.push('/waitOrder')
+              if (self.token) {
+                self.$router.push('/user/waitOrder')
               } else {
-                self.$router.push('/login')
+                self.$router.push('/user/login')
               }
             }
           })
@@ -103,7 +94,6 @@
             content: res.message
           })
         }
-        this.$router.push('/waitOrder')
       },
       logHide (str) {
         console.log(this.value)
@@ -116,17 +106,35 @@
       }
     },
     computed: {
+      services () {
+        return this.serviceList.map((item, i) => {
+          return this.newServiceList[i].value
+        })
+      },
+      serveCitys () {
+        let citys = []
+        ChinaAddressV4Data.forEach((item, i) => {
+          this.serveCityId.forEach((value, i) => {
+            if (item.value === value) {
+              citys.push(item.name)
+            }
+          })
+        })
+        return citys
+      },
       ...mapGetters([
         'certificateImgs',
         'workingExperienceImgs',
         'workingExperience',
         'contacts',
         'password',
+        'company',
         'phone',
         'address',
         'serveCityId',
         'serviceList',
-        'isLogin'
+        'token',
+        'newServiceList'
       ])
     },
     components: {

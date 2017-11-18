@@ -63,7 +63,7 @@
           content: res.message,
           onHide () {
             if (res.code === 402) {
-              self.$router.replace('/login')
+              self.$router.replace('/user/login')
             }
           }
         })

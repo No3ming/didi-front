@@ -7,9 +7,9 @@ export const showLoading = ({ commit }) => {
   commit('UPDATE_LOADING', { status: true })
 }
 
-export const upToken = ({ commit }, token) => {
-  // commit('UPDATE_TOKEN', token)
-  setCookie('token', token, 50)
+export const upToken = ({ commit }, token, time) => {
+  commit('UPDATE_TOKEN', token)
+  setCookie('user-token', token, time || 50)
 }
 
 export const upServiceList = ({ commit }, serviceList) => {
@@ -62,7 +62,7 @@ export const upCompletedTotal = ({ commit }, completedTotal) => {
 
 export const upIsCenter = ({ commit }, isCenter) => {
   commit('UPDATE_IS_CENTER', isCenter)
-  window.sessionStorage.setItem('isCenter', isCenter)
+  window.sessionStorage.setItem('user-isCenter', isCenter)
 }
 
 export const upCompany = ({ commit }, company) => {
@@ -71,4 +71,8 @@ export const upCompany = ({ commit }, company) => {
 
 export const upIsLogin = ({ commit }, isLogin) => {
   commit('UPDATE_IS_LOGIN', isLogin)
+}
+
+export const upNewServiceList = ({ commit }, newServiceList) => {
+  commit('UPDATE_NEW_SERVICE_LIST', newServiceList)
 }

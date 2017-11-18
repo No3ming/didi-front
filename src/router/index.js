@@ -27,7 +27,7 @@ Vue.use(Router)
 
 const routes = [
   {
-    path: '/waitOrder',
+    path: '/user/waitOrder',
     name: 'waitOrder',
     components: {
       default: WaitOrder,
@@ -36,81 +36,81 @@ const routes = [
     }
   },
   {
-    path: '/progress',
+    path: '/user/progress',
     components: {
       default: Progress,
       nav: NavBar
     }
   },
   {
-    path: '/completed',
+    path: '/user/completed',
     components: {
       default: Completed,
       nav: NavBar
     }
   },
   {
-    path: '/order/detail',
+    path: '/user/order/detail',
     name: 'detail',
     component: OrderDetail
   },
   {
-    path: '/order-detail-step',
+    path: '/user/order-detail-step',
     name: 'orderDetailStep',
     component: OrderDetailStep
   },
   {
-    path: '/',
+    path: '/user',
     name: 'login',
     component: Login
   },
   {
-    path: '/login',
+    path: '/user/login',
     name: 'login',
     component: Login
   },
   {
-    path: '/step1',
+    path: '/user/step1',
     name: 'step1',
     component: Step1
   },
   {
-    path: '/step2',
+    path: '/user/step2',
     name: 'step2',
     component: Step2
   },
   {
-    path: '/step3',
+    path: '/user/step3',
     name: 'step3',
     component: Step3
   },
   {
-    path: '/step4',
+    path: '/user/step4',
     name: 'step4',
     component: Step4
   },
   {
-    path: '/registered/certification',
+    path: '/user/registered/certification',
     name: 'certification',
     component: Certification
   },
   {
-    path: '/forget',
+    path: '/user/forget',
     name: 'forget',
     component: Forget
   },
   {
-    path: '/amount/:id',
+    path: '/user/amount/:id',
     name: 'amount',
     component: Amount
   },
   {
-    path: '/personal',
+    path: '/user/personal',
     name: 'personal',
     component: PersonalCenter
   },
   {
-    path: '/personal/my-info',
+    path: '/user/personal/my-info',
     name: 'myInfo',
     component: MyInfo
   },
@@ -128,19 +128,19 @@ const router = new Router({
 router.beforeEach((to, from, next) => {
   let flag
   switch (to.path) {
-    case '/step1':
-    case '/step2':
-    case '/step3':
-    case '/step4':
-    case '/registered/certification':
-    case '/forget':
-    case '/login':
-    case '/':
+    case '/user/step1':
+    case '/user/step2':
+    case '/user/step3':
+    case '/user/step4':
+    case '/user/registered/certification':
+    case '/user/forget':
+    case '/user/login':
+    case '/user/':
     case '':
       flag = true
       break
-    case '/personal':
-    case '/personal/my-info':
+    case '/user/personal':
+    case '/user/personal/my-info':
       store.dispatch('upIsCenter', true)
       break
     default:
@@ -148,23 +148,21 @@ router.beforeEach((to, from, next) => {
       flag = false
       break
   }
-  next()
-  console.log(flag)
-  // if (!store.getters.token && !flag) {
-  //   next({ path: '/login' })
-  // } else if (!store.getters.token && flag) {
-  //   if (to.path === '/') {
-  //     next({path: '/login'})
-  //   } else {
-  //     next()
-  //   }
-  // } else {
-  //   if (to.path === '/') {
-  //     next({path: '/canOrder'})
-  //   } else {
-  //     next()
-  //   }
-  // }
+  if (!store.getters.token && !flag) {
+    next({ path: '/user/login' })
+  } else if (!store.getters.token && flag) {
+    if (to.path === '/user') {
+      next({path: '/user/login'})
+    } else {
+      next()
+    }
+  } else {
+    if (to.path === '/user') {
+      next({path: '/user/waitOrder'})
+    } else {
+      next()
+    }
+  }
 })
 
 router.afterEach(to => {

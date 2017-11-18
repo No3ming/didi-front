@@ -1,5 +1,5 @@
 <template>
-  <container class="contain-nav canOrder">
+  <container class="contain-nav waitOrder">
     <sticky style="height:44px;">
       <grid class="order-header">
         <grid-item v-for="(item, index) in gridHeader" :key="index" class="header-item">
@@ -32,17 +32,17 @@
   import { mapActions } from 'vuex'
 
   export default {
-    name: 'canOrder',
-    data: () => {
+    name: 'waitOrder',
+    data () {
       return {
-        gridHeader: ['客户名字', '服务项目', '服务佣金', '订单状态'],
+        gridHeader: ['服务姓名', '服务项目', '订单价格', '订单状态'],
         orders: []
       }
     },
     methods: {
       onDetail (order) {
         this.upNowOrder(order)
-        this.$router.push('/order/detail?status=1')
+        this.$router.push('/user/order/detail?status=1')
       },
       ...mapActions([
         'upNowOrder'
@@ -63,7 +63,7 @@
           content: res.message,
           onHide () {
             if (res.code === 402) {
-              self.$router.replace('/login')
+              self.$router.replace('/user/login')
             }
           }
         })
@@ -81,7 +81,7 @@
 </script>
 
 <style lang="less">
-  .canOrder {
+  .waitOrder {
     .order-header {
       background-color: #fff;
     }

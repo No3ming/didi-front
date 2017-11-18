@@ -36,7 +36,7 @@
     methods: {
       next () {
         this.upServeCityId(this.value)
-        this.$router.push('/step3')
+        this.$router.push('/user/step3')
       },
       logHide (str) {
         console.log(this.value)
@@ -48,7 +48,7 @@
     computed: {
       ...mapGetters([
         'serveCityId',
-        'isLogin'
+        'token'
       ])
     },
     components: {

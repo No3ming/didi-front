@@ -43,6 +43,7 @@ const api = {
   postProgress (payload) {
     return service.post('/accountant/postProgress', payload)
   },
+  // 提需求
   onOrder (payload) {
     return service.post('/user/order', payload)
   },
@@ -51,7 +52,7 @@ const api = {
     return service.post('/accountant/robing', payload)
   },
   getCenter (payload) {
-    return service.post('/center/index', payload)
+    return service.post('/user/center', payload)
   },
   getInfo (payload) {
     return service.post('/accountant/info', payload)
@@ -60,7 +61,7 @@ const api = {
     return service.post('/accountant/withdrawList', payload)
   },
   getWithdraw (payload) {
-    return service.post('/accountant/withdraw', payload)
+    return service.post('/user/withdraw', payload)
   },
   getFrozenList (payload) {
     return service.post('/accountant/frozenList', payload)

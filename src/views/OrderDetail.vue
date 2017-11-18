@@ -21,7 +21,7 @@
         <span class="title">公司名称：</span>
         <span class="word" v-html="order.company"></span>
       </cell-box>
-      <cell-box v-if="order.commission_amount">
+      <cell-box v-if="order.commission_amount && order.enable_pay === 1">
         <span class="title">服务佣金：</span>
         <span class="danger" v-html="order.commission_amount"></span>
       </cell-box>
@@ -32,17 +32,22 @@
       <cell-box></cell-box>
     </group>
     <div v-if="status === 1">
-      <divider class="tips">温馨提示：支付保证金即可抢得此单<br/>保证金在成功完成订单后一起退还</divider>
-      <group>
-        <cell-box>
-          <x-button type="primary" @click.native="onPay" v-html="order.rob_depost === 0? '立即抢单': '立即支付'"></x-button>
-        </cell-box>
-      </group>
+      <div v-if="order.enable_pay === 1">
+        <divider class="tips">温馨提示：支付后订单会进入"进行中的订单"</divider>
+        <group>
+          <cell-box >
+            <x-button type="primary" @click.native="onPay" >立即支付</x-button>
+          </cell-box>
+        </group>
+      </div>
+      <div v-else>
+        <divider class="tips">温馨提示：客服会联系您处理需求</divider>
+      </div>
     </div>
     <div v-if="status === 2">
       <group>
         <cell-box>
-          <x-button plain type="primary" :link="'/order-detail-step?id=' + order.id">完成进度：<span v-html="order.status"></span></x-button>
+          <x-button plain type="primary" :link="'/user/order-detail-step?id=' + order.id">完成进度：<span v-html="order.status"></span></x-button>
         </cell-box>
         <cell-box>
           <x-button type="primary" @click.native="isShow = true">完成订单</x-button>
@@ -123,7 +128,7 @@
               title: '提示',
               content: '抢单成功！',
               onHide () {
-                self.$router.replace('/progress')
+                self.$router.replace('/user/progress')
               }
             })
           } else {
@@ -138,7 +143,7 @@
             title: '提示',
             content: '暂不支持支付！',
             onHide () {
-              self.$router.replace('/canOrder')
+              self.$router.replace('/user/waitOrder')
             }
           })
         }
@@ -151,7 +156,7 @@
             title: '提示',
             content: '已经提交！',
             onHide () {
-              self.$router.replace('/completed')
+              self.$router.replace('/user/completed')
             }
           })
         } else {
@@ -162,7 +167,7 @@
         }
       },
       onFinished () {
-        this.$router.replace('/completed')
+        this.$router.replace('/user/completed')
       },
       miniUploaded (res) {
         this.$vux.loading.hide()

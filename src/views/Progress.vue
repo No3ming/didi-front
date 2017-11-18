@@ -1,5 +1,5 @@
 <template>
-  <container class="contain-nav canOrder">
+  <container class="contain-nav progress">
     <div style="height:44px;">
       <grid class="order-header">
         <grid-item v-for="(item, index) in gridHeader" :key="index" class="header-item">
@@ -43,7 +43,7 @@
     methods: {
       onDetail (order) {
         this.upNowOrder(order)
-        this.$router.push('/order/detail?status=2')
+        this.$router.push('/user/order/detail?status=2')
       },
       ...mapActions([
         'upNowOrder',
@@ -66,7 +66,7 @@
           content: res.message,
           onHide () {
             if (res.code === 402) {
-              self.$router.replace('/login')
+              self.$router.replace('/user/login')
             }
           }
         })
@@ -85,7 +85,7 @@
 </script>
 
 <style lang="less">
-  .canOrder {
+  .progress {
     .order-header {
       background-color: #fff;
     }
