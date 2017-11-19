@@ -4,6 +4,7 @@ import Vue from 'vue'
 import FastClick from 'fastclick'
 import VueRouter from 'vue-router'
 import App from './App'
+import store from './store'
 import router from './router'
 import api from './api'
 import { LoadingPlugin, AlertPlugin, ToastPlugin } from 'vux'
@@ -21,6 +22,7 @@ Vue.config.productionTip = false
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
+  store,
   router,
   template: '<App/>',
   components: { App }
