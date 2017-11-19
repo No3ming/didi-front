@@ -1,17 +1,17 @@
 <template>
   <div class="nav-bar one-px-top">
-    <router-link class="nav-bar-item" to="/waitOrder">
+    <router-link class="nav-bar-item" to="/user/waitOrder">
       <i class="icon-qiangdan"></i>
       <p class="nav-bar-label">待处理的订单</p>
     </router-link>
-    <router-link class="nav-bar-item" to="/progress">
+    <router-link class="nav-bar-item" to="/user/progress">
        <span class="badge-box">
         <badge :text="progressTotal" v-show="progressTotal > 0" class="badge"></badge>
         <i class="icon-progress"></i>
        </span>
       <p class="nav-bar-label">进行中的订单</p>
     </router-link>
-    <router-link class="nav-bar-item" to="/completed">
+    <router-link class="nav-bar-item" to="/user/completed">
       <span class="badge-box">
         <i class="icon-wancheng"></i>
         <badge :text="completedTotal" v-show="completedTotal > 0" class="badge"></badge>

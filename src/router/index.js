@@ -126,6 +126,7 @@ const router = new Router({
 })
 
 router.beforeEach((to, from, next) => {
+  let path = to.query['path'] || 'order'
   let flag
   switch (to.path) {
     case '/user/step1':
@@ -136,29 +137,29 @@ router.beforeEach((to, from, next) => {
     case '/user/forget':
     case '/user/login':
     case '/user/':
-    case '':
+    case '/':
       flag = true
       break
     case '/user/personal':
     case '/user/personal/my-info':
-      store.dispatch('upIsCenter', true)
       break
     default:
-      store.dispatch('upIsCenter', false)
       flag = false
       break
   }
   if (!store.getters.token && !flag) {
-    next({ path: '/user/login' })
+    next({ path: '/user/login?path=' + path })
   } else if (!store.getters.token && flag) {
-    if (to.path === '/user') {
-      next({path: '/user/login'})
+    if (to.path === '/user/' || to.path === '/user') {
+      next({path: '/user/login?path=' + path})
     } else {
       next()
     }
   } else {
-    if (to.path === '/user') {
+    if ((to.path === '/user/' || to.path === '/user') && path !== 'center') {
       next({path: '/user/waitOrder'})
+    } else if ((to.path === '/user/' || to.path === '/user') && path === 'center') {
+      next({path: '/user/personal'})
     } else {
       next()
     }
@@ -167,27 +168,27 @@ router.beforeEach((to, from, next) => {
 
 router.afterEach(to => {
   switch (to.path) {
-    case '/':
-    case '/login':
-    case '/canOrder':
+    case '/user':
+    case '/user/login':
+    case '/user/canOrder':
       document.title = '我有需求'
       break
-    case '/progress':
+    case '/user/progress':
       document.title = '进行中的订单'
       break
-    case '/completed':
+    case '/user/completed':
       document.title = '完成的订单'
       break
-    case '/order/detail':
+    case '/user/order/detail':
       document.title = '订单详情'
       break
-    case '/registered/step1':
-    case '/registered/step2':
-    case '/registered/step3':
-    case '/registered/certification':
+    case '/user/step1':
+    case '/user/step2':
+    case '/user/step3':
+    case '/user/certification':
       document.title = '进行认证'
       break
-    case '/personal':
+    case '/user/personal':
       document.title = '个人中心'
       break
     case '/not-found':

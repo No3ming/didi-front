@@ -50,7 +50,10 @@
           <x-button plain type="primary" :link="'/user/order-detail-step?id=' + order.id">完成进度：<span v-html="order.status"></span></x-button>
         </cell-box>
         <cell-box>
-          <x-button type="primary" @click.native="isShow = true">完成订单</x-button>
+          <x-button type="primary" @click.native="onToushu">投诉服务人员</x-button>
+        </cell-box>
+        <cell-box>
+          <x-button type="primary" @click.native="onComplete">投诉服务人员</x-button>
         </cell-box>
       </group>
     </div>
@@ -149,7 +152,10 @@
         }
       },
       async onCompleted () {
-        const res = await api.robOrdering()
+        const res = await api.postCompleted({
+          id: this.order.id
+        })
+        let self = this
         if (res.code === 20000) {
           let self = this
           this.$vux.alert.show({
@@ -162,12 +168,21 @@
         } else {
           this.$vux.alert.show({
             title: '提示',
-            content: res.message
+            content: res.message,
+            onHide () {
+              self.$router.replace('/user/login?path=order')
+            }
           })
         }
       },
       onFinished () {
         this.$router.replace('/user/completed')
+      },
+      onToushu () {
+        this.$vux.alert.show({
+          title: '提示',
+          content: '请电话联系客服：100000000'
+        })
       },
       miniUploaded (res) {
         this.$vux.loading.hide()

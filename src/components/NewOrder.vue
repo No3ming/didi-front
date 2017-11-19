@@ -1,5 +1,5 @@
 <template>
-  <router-link class="new-button" to="/step1">新增</router-link>
+  <router-link class="new-button" to="/user/step1">新增</router-link>
 </template>
 
 <script>

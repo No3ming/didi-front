@@ -65,8 +65,8 @@
           title: '提示',
           content: res.message,
           onHide () {
-            if (res.code === 402) {
-              self.$router.replace('/user/login')
+            if (res.code === 402 || res.code === 405) {
+              self.$router.replace('/user/login?path=order')
             }
           }
         })

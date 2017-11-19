@@ -50,13 +50,14 @@
           if (res.code === 20000) {
             this.upToken(res.data.token)
             let self = this
+            let path = this.$route.query['path'] || 'order'
             this.$vux.alert.show({
               title: '登陆成功',
               onHide () {
                 axios.defaults.params = {token: res.data.token}
                 self.upIsLogin(true)
                 self.upIsCenter(window.sessionStorage.getItem('user-isCenter') === 'true')
-                if (self.isCenter === 'true' || self.isCenter === true) {
+                if (path === 'center') {
                   self.$router.replace('/user/personal')
                 } else {
                   self.$router.replace('/user/waitOrder')

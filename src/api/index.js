@@ -37,10 +37,14 @@ const api = {
   },
   // 获取完成进度
   schedule (payload) {
-    return service.post('/accountant/schedule', payload)
+    return service.post('/user/schedule', payload)
   },
   // 提交订单进度
   postProgress (payload) {
+    return service.post('/accountant/postProgress', payload)
+  },
+  // 完成订单
+  postCompleted (payload) {
     return service.post('/accountant/postProgress', payload)
   },
   // 提需求

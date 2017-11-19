@@ -61,8 +61,8 @@
           title: '提示',
           content: res.message,
           onHide () {
-            if (res.code === 402) {
-              self.$router.replace('/user/login')
+            if (res.code === 402 || res.code === 405) {
+              self.$router.replace('/user/login?path=center')
             }
           }
         })
@@ -87,8 +87,8 @@
         }
         this.$refs.confirm.setInputValue('')
         const res = await api.getWithdraw({amount: value})
+        let self = this
         if (res.code === 20000) {
-          let self = this
           this.$vux.alert.show({
             title: '提示',
             content: '已经提交处理！',
@@ -99,7 +99,12 @@
         } else {
           this.$vux.alert.show({
             title: '提示',
-            content: res.message
+            content: res.message,
+            onHide () {
+              if (res.code === 402 || res.code === 405) {
+                self.$router.replace('/user/login?path=center')
+              }
+            }
           })
         }
       },

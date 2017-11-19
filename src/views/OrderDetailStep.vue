@@ -39,8 +39,8 @@
           title: '提示',
           content: res.message,
           onHide () {
-            if (res.code === 402) {
-              self.$router.replace('/user/login')
+            if (res.code === 402 || res.code === 405) {
+              self.$router.replace('/user/login?path=order')
             }
           }
         })
@@ -48,7 +48,7 @@
     },
     methods: {
       next () {
-        this.$router.push('/user/registered/step2')
+        this.$router.push('/user/step2')
       },
       change01 (str) {
         console.log(str)
@@ -64,8 +64,8 @@
               title: '提示',
               content: res.message,
               onHide () {
-                if (res.code === 402) {
-                  self.$router.replace('/user/login')
+                if (res.code === 402 || res.code === 405) {
+                  self.$router.replace('/user/login?path=order')
                 }
               }
             })

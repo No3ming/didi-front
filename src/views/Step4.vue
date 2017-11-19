@@ -74,9 +74,9 @@
         }
 
         this.$vux.loading.hide()
+        let self = this
         if (res.code === 20000) {
           // this.$router.push('/user/registered/step4')
-          let self = this
           this.$vux.alert.show({
             title: '提交成功',
             content: res.message,
@@ -84,14 +84,19 @@
               if (self.token) {
                 self.$router.push('/user/waitOrder')
               } else {
-                self.$router.push('/user/login')
+                self.$router.push('/user/login?path=order')
               }
             }
           })
         } else {
           this.$vux.alert.show({
             title: '提示',
-            content: res.message
+            content: res.message,
+            onHide () {
+              if (res.code === 402 || res.code === 405) {
+                self.$router.replace('/user/login?path=order')
+              }
+            }
           })
         }
       },
