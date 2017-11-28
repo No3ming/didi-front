@@ -91,8 +91,7 @@
       ...mapActions([
         'upToken',
         'upIsLogin',
-        'upIsCenter',
-        'upToken'
+        'upIsCenter'
       ])
     },
     computed: {
